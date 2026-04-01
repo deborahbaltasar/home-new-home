@@ -3,40 +3,60 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: "Sora";
+  --font-sans: "Manrope";
+  --font-display: "Sora";
 
-  --color-surface: #f5f7fb;
-  --color-surface-muted: #e8edf5;
+  --color-canvas: #f3f5f9;
+  --color-surface: #fbfcfe;
+  --color-surface-muted: #eef2f8;
+  --color-surface-strong: #dde6f3;
   --color-border: rgba(20, 34, 56, 0.1);
+  --color-border-strong: rgba(20, 34, 56, 0.18);
   --color-foreground: #112033;
   --color-muted: #5d6b82;
   --color-primary: #2563eb;
   --color-primary-foreground: #f7fbff;
-  --color-accent: #ff8a3d;
-  --color-accent-foreground: #1f2937;
+  --color-accent: #fb923c;
+  --color-accent-foreground: #25180e;
+  --color-success: #0f9f6e;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-info: #0ea5e9;
+  --color-ring: rgba(37, 99, 235, 0.28);
 
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
   --radius-lg: 1.5rem;
   --radius-xl: 2rem;
+  --radius-pill: 999px;
 
   --shadow-soft: 0 10px 40px rgba(22, 34, 55, 0.08);
   --shadow-panel: 0 24px 80px rgba(16, 24, 40, 0.14);
+  --shadow-glow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 20px 65px rgba(37, 99, 235, 0.14);
 }
 
 .dark {
-  --color-surface: #0d1523;
-  --color-surface-muted: #121d30;
+  --color-canvas: #09111d;
+  --color-surface: #0f1828;
+  --color-surface-muted: #132034;
+  --color-surface-strong: #1b2b43;
   --color-border: rgba(214, 222, 235, 0.12);
+  --color-border-strong: rgba(214, 222, 235, 0.2);
   --color-foreground: #ecf2ff;
   --color-muted: #98a7c1;
-  --color-primary: #5ea2ff;
+  --color-primary: #68a8ff;
   --color-primary-foreground: #08111f;
-  --color-accent: #ff9150;
-  --color-accent-foreground: #101827;
+  --color-accent: #ff9a5c;
+  --color-accent-foreground: #1b130d;
+  --color-success: #3ac996;
+  --color-warning: #ffbf47;
+  --color-danger: #ff7a7a;
+  --color-info: #5cc8ff;
+  --color-ring: rgba(104, 168, 255, 0.35);
 
   --shadow-soft: 0 16px 50px rgba(4, 8, 16, 0.35);
   --shadow-panel: 0 28px 90px rgba(3, 7, 14, 0.45);
+  --shadow-glow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 24px 85px rgba(104, 168, 255, 0.12);
 }
 
 * {
@@ -53,9 +73,23 @@ body {
   background:
     radial-gradient(circle at top, rgba(37, 99, 235, 0.16), transparent 32%),
     radial-gradient(circle at bottom right, rgba(255, 138, 61, 0.1), transparent 28%),
-    var(--color-surface);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), transparent 28%),
+    var(--color-canvas);
   color: var(--color-foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), ui-sans-serif, system-ui;
+  letter-spacing: -0.03em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
 }
 
 a {
@@ -73,4 +107,3 @@ select {
 ::selection {
   background: rgba(37, 99, 235, 0.2);
 }
-

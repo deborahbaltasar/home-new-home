@@ -65,7 +65,7 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-1-brand-system",
         title: "Finalize the visual identity and semantic tokens",
-        status: "in_progress",
+        status: "done",
         dependencies: ["phase-0-design-system"],
         acceptanceCriteria:
           "The design system expresses the intended premium home-centered direction."
@@ -73,10 +73,18 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-1-primitives",
         title: "Expand core primitives and patterns",
-        status: "not_started",
+        status: "done",
         dependencies: ["phase-1-brand-system"],
         acceptanceCriteria:
           "Buttons, cards, badges, sheets, tabs, chips, and sections cover core product needs."
+      },
+      {
+        id: "phase-1-guidelines",
+        title: "Document typography, spacing, and motion guidelines",
+        status: "done",
+        dependencies: ["phase-1-brand-system"],
+        acceptanceCriteria:
+          "Design guidelines are available in code for consistent implementation decisions."
       }
     ]
   },
