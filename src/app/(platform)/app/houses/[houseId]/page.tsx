@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { clerkAuthProvider } from "@/integrations/clerk/clerk-auth-provider";
-import { cookieHouseRepository } from "@/features/houses/infrastructure/cookie-house-repository";
+import { getHouseRepository } from "@/features/houses/infrastructure/house-repository-factory";
 import { HouseDetailPanel } from "@/features/houses/presentation/house-detail-panel";
 
 type HouseDetailPageProps = {
@@ -11,12 +11,13 @@ type HouseDetailPageProps = {
 export default async function HouseDetailPage({ params }: HouseDetailPageProps) {
   const { houseId } = await params;
   const user = await clerkAuthProvider.getCurrentUser();
+  const repository = getHouseRepository();
 
   if (!user) {
     return null;
   }
 
-  const house = await cookieHouseRepository.findByIdForUser(user, houseId);
+  const house = await repository.findByIdForUser(user, houseId);
 
   if (!house) {
     notFound();

@@ -5,12 +5,12 @@ import { redirect } from "next/navigation";
 
 import { clerkAuthProvider } from "@/integrations/clerk/clerk-auth-provider";
 import {
-  cookieHouseRepository,
   parseCreateHouseInput,
   parseCreateInviteInput,
   parseRemoveMemberInput,
   parseUpdateMemberRoleInput
 } from "@/features/houses/infrastructure/cookie-house-repository";
+import { getHouseRepository } from "@/features/houses/infrastructure/house-repository-factory";
 
 async function requireUser() {
   const user = await clerkAuthProvider.getCurrentUser();
@@ -24,7 +24,8 @@ async function requireUser() {
 
 export async function createHouseAction(formData: FormData) {
   const user = await requireUser();
-  const house = await cookieHouseRepository.createHouse(user, parseCreateHouseInput(formData));
+  const repository = getHouseRepository();
+  const house = await repository.createHouse(user, parseCreateHouseInput(formData));
 
   revalidatePath("/app");
   revalidatePath("/app/houses");
@@ -34,8 +35,9 @@ export async function createHouseAction(formData: FormData) {
 export async function createHouseInviteAction(formData: FormData) {
   const user = await requireUser();
   const input = parseCreateInviteInput(formData);
+  const repository = getHouseRepository();
 
-  await cookieHouseRepository.createInvite(user, input);
+  await repository.createInvite(user, input);
 
   revalidatePath("/app");
   revalidatePath("/app/houses");
@@ -47,8 +49,9 @@ export async function createHouseInviteAction(formData: FormData) {
 export async function updateHouseMemberRoleAction(formData: FormData) {
   const user = await requireUser();
   const input = parseUpdateMemberRoleInput(formData);
+  const repository = getHouseRepository();
 
-  await cookieHouseRepository.updateMemberRole(user, input);
+  await repository.updateMemberRole(user, input);
 
   revalidatePath("/app");
   revalidatePath("/app/houses");
@@ -60,8 +63,9 @@ export async function updateHouseMemberRoleAction(formData: FormData) {
 export async function removeHouseMemberAction(formData: FormData) {
   const user = await requireUser();
   const input = parseRemoveMemberInput(formData);
+  const repository = getHouseRepository();
 
-  await cookieHouseRepository.removeMember(user, input);
+  await repository.removeMember(user, input);
 
   revalidatePath("/app");
   revalidatePath("/app/houses");

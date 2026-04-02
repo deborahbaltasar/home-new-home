@@ -144,15 +144,15 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
   {
     id: "phase-5",
     title: "Rooms & Categories",
-    objective: "Implement home-specific organization primitives.",
+    objective: "Persist the houses domain in Supabase and implement home-specific organization primitives.",
     tasks: [
       {
         id: "phase-5-rooms-categories",
-        title: "Organize the home by rooms and categories",
-        status: "not_started",
+        title: "Move houses persistence to Supabase and organize the home by rooms and categories",
+        status: "in_progress",
         dependencies: ["phase-4-houses"],
         acceptanceCriteria:
-          "Users can manage rooms and categories and attach items to them."
+          "Houses and members persist in Supabase, and users can manage rooms and categories and attach items to them."
       }
     ]
   },

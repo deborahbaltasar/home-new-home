@@ -107,16 +107,16 @@ The project has moved beyond shell-only setup and now has the Houses domain in p
 - base theme and primitives created
 - Clerk-backed auth shell created
 - house creation, memberships, role management, and invite-link generation created
-- build and typecheck passing
+- phase 5 started with Supabase-ready houses persistence and initial rooms/categories CRUD
 
 ## Next Recommended Phase
 
 The next step is to organize each house before item management lands:
 
-1. create room management
-2. create category management
-3. connect both structures to each house
-4. then unlock item CRUD on top of that organization model
+1. apply the Supabase migration and configure the envs in the target environment
+2. keep rooms and categories flowing through the real database path
+3. connect both structures to each house before item CRUD
+4. then attach items to rooms and categories in Phase 6
 
 ## Local Development
 

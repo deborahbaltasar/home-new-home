@@ -6,13 +6,14 @@ import { Chip } from "@/design-system/primitives/chip";
 import { themeContract } from "@/design-system/themes/theme-contract";
 import { calculateOverallProgress } from "@/features/checklist/application/calculate-progress";
 import { technicalChecklistSeed } from "@/features/checklist/infrastructure/technical-checklist.seed";
-import { cookieHouseRepository } from "@/features/houses/infrastructure/cookie-house-repository";
+import { getHouseRepository } from "@/features/houses/infrastructure/house-repository-factory";
 import { clerkAuthProvider } from "@/integrations/clerk/clerk-auth-provider";
 
 export default async function AppHomePage() {
   const progress = calculateOverallProgress(technicalChecklistSeed);
   const user = await clerkAuthProvider.getCurrentUser();
-  const houses = user ? await cookieHouseRepository.listByUser(user) : [];
+  const repository = getHouseRepository();
+  const houses = user ? await repository.listByUser(user) : [];
   const quickStart = [
     "Open an active house workspace",
     "Review admin roles and invite links",
