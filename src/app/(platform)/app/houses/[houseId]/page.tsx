@@ -1,4 +1,8 @@
-import { EmptyStateCard } from "@/shared/components/empty-state-card";
+import { notFound } from "next/navigation";
+
+import { clerkAuthProvider } from "@/integrations/clerk/clerk-auth-provider";
+import { cookieHouseRepository } from "@/features/houses/infrastructure/cookie-house-repository";
+import { HouseDetailPanel } from "@/features/houses/presentation/house-detail-panel";
 
 type HouseDetailPageProps = {
   params: Promise<{ houseId: string }>;
@@ -6,14 +10,17 @@ type HouseDetailPageProps = {
 
 export default async function HouseDetailPage({ params }: HouseDetailPageProps) {
   const { houseId } = await params;
+  const user = await clerkAuthProvider.getCurrentUser();
 
-  return (
-    <EmptyStateCard
-      badge={`House ${houseId}`}
-      title="House workspace reserved for the first real house flow."
-      description="The route contract is active, authenticated, and ready for Phase 4. Once houses exist, this screen becomes the hub for rooms, items, decisions, and settings."
-      actionHref="/app/houses"
-      actionLabel="Back to houses"
-    />
-  );
+  if (!user) {
+    return null;
+  }
+
+  const house = await cookieHouseRepository.findByIdForUser(user, houseId);
+
+  if (!house) {
+    notFound();
+  }
+
+  return <HouseDetailPanel house={house} userId={user.id} />;
 }

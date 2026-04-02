@@ -100,22 +100,23 @@ Business rules are kept away from framework and vendor code. Shared code exists,
 
 ## Status
 
-The project is currently in the foundation stage:
+The project has moved beyond shell-only setup and now has the Houses domain in place:
 
 - strategic documentation created
 - repository scaffold created
 - base theme and primitives created
 - Clerk-backed auth shell created
+- house creation, memberships, role management, and invite-link generation created
 - build and typecheck passing
 
 ## Next Recommended Phase
 
-The next step is to move from authenticated shell to the first real house workflow:
+The next step is to organize each house before item management lands:
 
-1. create the first house
-2. support multiple houses and memberships
-3. add invite links and admin roles
-4. then unlock room and category organization on top of that structure
+1. create room management
+2. create category management
+3. connect both structures to each house
+4. then unlock item CRUD on top of that organization model
 
 ## Local Development
 

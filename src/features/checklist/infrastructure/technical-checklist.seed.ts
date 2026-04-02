@@ -134,7 +134,7 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-4-houses",
         title: "Deliver house creation and collaboration foundations",
-        status: "not_started",
+        status: "done",
         dependencies: ["phase-3-auth-shell"],
         acceptanceCriteria:
           "Users can create houses, manage members, and share invites."

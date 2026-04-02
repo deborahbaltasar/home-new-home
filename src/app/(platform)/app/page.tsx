@@ -6,22 +6,25 @@ import { Chip } from "@/design-system/primitives/chip";
 import { themeContract } from "@/design-system/themes/theme-contract";
 import { calculateOverallProgress } from "@/features/checklist/application/calculate-progress";
 import { technicalChecklistSeed } from "@/features/checklist/infrastructure/technical-checklist.seed";
-import { EmptyStateCard } from "@/shared/components/empty-state-card";
+import { cookieHouseRepository } from "@/features/houses/infrastructure/cookie-house-repository";
+import { clerkAuthProvider } from "@/integrations/clerk/clerk-auth-provider";
 
-export default function AppHomePage() {
+export default async function AppHomePage() {
   const progress = calculateOverallProgress(technicalChecklistSeed);
+  const user = await clerkAuthProvider.getCurrentUser();
+  const houses = user ? await cookieHouseRepository.listByUser(user) : [];
   const quickStart = [
-    "Create your first house shell",
-    "Invite the people helping with planning",
-    "Start organizing by room and category"
+    "Open an active house workspace",
+    "Review admin roles and invite links",
+    "Move next into rooms and categories"
   ];
 
   return (
     <div className="grid gap-4">
       <SectionHeading
         eyebrow="Workspace"
-        title="The authenticated shell is live and ready for the first real home setup."
-        description="Phase 3 now covers sign-in, route protection, mobile-first navigation, and first-run guidance so the app can move into houses and membership."
+        title="The workspace now carries real house collaboration instead of shell-only guidance."
+        description="Phase 4 adds house creation, multiple homes, cover styles, member roles, and invite links so the platform can move into room and item structure next."
       />
 
       <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
@@ -29,14 +32,14 @@ export default function AppHomePage() {
           <div className="flex flex-wrap items-center gap-3">
             <Badge variant="primary">Progress {progress}%</Badge>
             <Chip active>{themeContract.guidelines.positioning.tone}</Chip>
-            <Badge variant="success">Phase 3 shipped</Badge>
+            <Badge variant="success">Phase 4 shipped</Badge>
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold tracking-tight">Quick start onboarding</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">House foundation live</h2>
             <p className="text-sm leading-6 text-muted">
-              The workspace no longer stops at a placeholder. It explains what comes next and keeps
-              the user moving toward the first real house setup.
+              The platform now exposes active houses with collaboration structure in place. The next
+              phase can focus on rooms and categories instead of shell plumbing.
             </p>
           </div>
 
@@ -64,25 +67,28 @@ export default function AppHomePage() {
         <Card className="space-y-4" tone="subtle">
           <Badge variant="neutral">What changed</Badge>
           <ul className="space-y-3 text-sm leading-6 text-muted">
-            <li>Real Clerk screens now live on `/login` and `/sign-up`.</li>
-            <li>All `/app` routes are guarded from unauthenticated access.</li>
-            <li>The shell now works comfortably on mobile with bottom navigation.</li>
+            <li>{houses.length} houses are now available in the authenticated workspace.</li>
+            <li>Member roles are explicit per house and support multiple admins.</li>
+            <li>Invite links are generated from the house settings surface.</li>
           </ul>
         </Card>
       </div>
 
-      <EmptyStateCard
-        badge="Initial state"
-        title="No house exists yet, so the app starts with a guided empty state."
-        description="Phase 4 will replace this card with house creation and invitation flows. For now, the shell keeps the user oriented and points directly to the next meaningful action."
-        actionHref="/app/houses"
-        actionLabel="Open houses area"
-        secondary={
-          <span className="rounded-2xl border border-border bg-background/80 px-3 py-2 text-xs text-muted">
-            Empty states are contextual instead of generic placeholders.
-          </span>
-        }
-      />
+      <Card className="space-y-4" tone="subtle">
+        <Badge variant="accent">Next slice</Badge>
+        <h2 className="text-2xl font-semibold tracking-tight">Rooms and categories should land next.</h2>
+        <p className="max-w-3xl text-sm leading-6 text-muted">
+          Houses are now concrete entities with memberships and invites. The dependency-ordered next
+          step is to let each house organize planning by room and category.
+        </p>
+        <div>
+          <a href="/app/houses">
+            <Button type="button" variant="outline">
+              Review house workspaces
+            </Button>
+          </a>
+        </div>
+      </Card>
     </div>
   );
 }
