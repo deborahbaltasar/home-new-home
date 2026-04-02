@@ -97,17 +97,19 @@ export function MarketingHeroPreview({ progress }: { progress: number }) {
 
   return (
     <Card tone="emphasis" className="w-full space-y-5 overflow-hidden p-6 sm:p-7">
-      <div className="flex items-start justify-between gap-4">
-        <div className="space-y-1">
+      <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 space-y-1">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
             Overview
           </p>
-          <h2 className="text-2xl font-semibold">Home Sweet Home</h2>
+          <h2 className="min-w-0 text-2xl font-semibold">Home Sweet Home</h2>
         </div>
-        <Badge variant="success">{progress}% shaping up</Badge>
+        <Badge variant="success" className="w-fit self-start">
+          {progress}% shaping up
+        </Badge>
       </div>
 
-      <div className="inline-flex rounded-pill bg-surface-muted p-1">
+      <div className="inline-flex max-w-full flex-wrap rounded-pill bg-surface-muted p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -151,22 +153,27 @@ export function MarketingHeroPreview({ progress }: { progress: number }) {
               duration: 0.42,
               ease: [0.22, 1, 0.36, 1]
             }}
-            className="space-y-5"
+            className="min-w-0 space-y-5"
           >
-            <div className="grid gap-3">
-              <Card tone="subtle" className="space-y-3">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
+            <div className="grid min-w-0 gap-3">
+              <Card tone="subtle" className="min-w-0 space-y-3">
+                <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex min-w-0 items-center gap-3">
                     <div className="rounded-pill bg-primary/12 p-2 text-primary">
                       <House className="h-4 w-4" />
                     </div>
-                    <p className="font-semibold">{active.heading}</p>
+                    <p className="min-w-0 break-words font-semibold">{active.heading}</p>
                   </div>
-                  <Badge variant={active.statusVariant}>{active.status}</Badge>
+                  <Badge variant={active.statusVariant} className="w-fit self-start">
+                    {active.status}
+                  </Badge>
                 </div>
-                <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="grid min-w-0 grid-cols-3 gap-2 text-center">
                   {active.metrics.map(([value, label]) => (
-                    <div key={`${value}-${label}`} className="rounded-2xl bg-surface px-3 py-2">
+                    <div
+                      key={`${value}-${label}`}
+                      className="min-w-0 rounded-2xl bg-surface px-3 py-2"
+                    >
                       <p className="text-lg font-semibold">{value}</p>
                       <p className="text-xs uppercase tracking-[0.15em] text-muted">{label}</p>
                     </div>
@@ -196,13 +203,15 @@ export function MarketingHeroPreview({ progress }: { progress: number }) {
         </AnimatePresence>
       </div>
 
-      <Sheet className="bg-canvas/80">
-        <div className="grid gap-3 sm:grid-cols-3">
+      <Sheet className="overflow-hidden bg-canvas/80">
+        <div className="grid min-w-0 gap-3 sm:grid-cols-3">
           {previewContent.rooms.bottom.map((label) => (
-            <div key={label} className="rounded-2xl bg-surface px-4 py-3">
+            <div key={label} className="min-w-0 rounded-2xl bg-surface px-4 py-3">
               <div className="flex items-center gap-2">
                 <GameIcon label={label} />
-                <p className="text-xs font-semibold leading-5 sm:text-sm">{label}</p>
+                <p className="min-w-0 break-words text-xs font-semibold leading-5 sm:text-sm">
+                  {label}
+                </p>
               </div>
             </div>
           ))}
