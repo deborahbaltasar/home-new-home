@@ -96,18 +96,18 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-2-landing",
         title: "Build the premium marketing landing",
-        status: "in_progress",
+        status: "done",
         dependencies: ["phase-1-brand-system"],
         acceptanceCriteria:
-          "The landing clearly communicates the product story, value, and CTAs."
+          "The landing communicates the home-planning story with clear sign-up and roadmap entry points."
       },
       {
         id: "phase-2-public-roadmap",
         title: "Expose roadmap progress in public language",
-        status: "in_progress",
+        status: "done",
         dependencies: ["phase-0-checklist-sync"],
         acceptanceCriteria:
-          "The roadmap page translates technical progress into user-facing feature language."
+          "The landing and roadmap page translate technical progress into user-facing feature language."
       }
     ]
   },
@@ -203,12 +203,12 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
   },
   {
     id: "phase-9",
-    title: "Decisions & Planning Poker",
+    title: "Decisions & Priority Poker",
     objective: "Introduce collaborative decision sessions and voting.",
     tasks: [
       {
         id: "phase-9-decisions",
-        title: "Deliver decision sessions and planning poker foundations",
+        title: "Deliver decision sessions and priority poker foundations",
         status: "not_started",
         dependencies: ["phase-6-items-core"],
         acceptanceCriteria:

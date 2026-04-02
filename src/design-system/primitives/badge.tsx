@@ -11,7 +11,7 @@ type BadgeProps = PropsWithChildren<
 
 const variants: Record<BadgeVariant, string> = {
   primary: "bg-primary/12 text-primary",
-  accent: "bg-accent/16 text-accent-foreground",
+  accent: "bg-accent/16 text-accent dark:bg-accent/18 dark:text-[#ffd7b8]",
   neutral: "bg-surface-strong text-foreground",
   success: "bg-success/12 text-success",
   warning: "bg-warning/12 text-warning"
@@ -26,7 +26,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-pill px-3 py-1 text-xs font-semibold tracking-[0.12em] uppercase",
+        "inline-flex min-w-fit items-center whitespace-nowrap rounded-pill px-3 py-1 text-xs font-semibold tracking-[0.12em] uppercase",
         variants[variant],
         className
       )}
@@ -36,4 +36,3 @@ export function Badge({
     </span>
   );
 }
-
