@@ -1,44 +1,32 @@
-import { ThemeToggle } from "@/shared/components/theme-toggle";
+import { redirect } from "next/navigation";
 import type { Route } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
+
+import { clerkAuthProvider } from "@/integrations/clerk/clerk-auth-provider";
+import { PlatformNavigation } from "@/shared/components/platform-navigation";
+import { SiteFooter } from "@/shared/components/site-footer";
 
 type PlatformLayoutProps = {
   children: ReactNode;
 };
 
-const navItems: Array<{ href: Route; label: string }> = [
-  { href: "/app", label: "Overview" },
-  { href: "/app/houses", label: "Houses" }
-];
+export default async function PlatformLayout({ children }: PlatformLayoutProps) {
+  const user = await clerkAuthProvider.getCurrentUser();
 
-export default function PlatformLayout({ children }: PlatformLayoutProps) {
+  if (!user) {
+    redirect("/login" as Route);
+  }
+
   return (
-    <div className="min-h-screen">
-      <header className="border-b border-border/60 bg-surface/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-muted">Platform shell</p>
-            <p className="text-sm font-semibold">Home planning workspace</p>
-          </div>
-          <ThemeToggle />
-        </div>
-      </header>
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row">
-        <aside className="w-full rounded-[1.75rem] border border-border bg-surface/70 p-4 shadow-soft lg:w-72">
-          <nav className="flex flex-col gap-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-2xl px-4 py-3 text-sm font-medium text-muted transition hover:bg-surface-muted hover:text-foreground"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </aside>
+    <div className="flex min-h-screen flex-col bg-background">
+      <PlatformNavigation
+        userLabel="Build your home, one decision at a time"
+      />
+      <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 pb-36 sm:px-6 lg:pb-6">
         <main className="min-w-0 flex-1">{children}</main>
+      </div>
+      <div className="pb-28 lg:pb-0">
+        <SiteFooter />
       </div>
     </div>
   );

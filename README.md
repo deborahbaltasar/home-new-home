@@ -105,17 +105,17 @@ The project is currently in the foundation stage:
 - strategic documentation created
 - repository scaffold created
 - base theme and primitives created
-- shells for landing and app created
+- Clerk-backed auth shell created
 - build and typecheck passing
 
 ## Next Recommended Phase
 
-The next step is to deepen the design system and brand direction:
+The next step is to move from authenticated shell to the first real house workflow:
 
-1. finalize semantic visual tokens
-2. expand primitives and patterns
-3. refine the landing into the intended premium home-planning narrative
-4. then wire real authentication and app access flow
+1. create the first house
+2. support multiple houses and memberships
+3. add invite links and admin roles
+4. then unlock room and category organization on top of that structure
 
 ## Local Development
 

@@ -1,17 +1,20 @@
+import { SignIn } from "@clerk/nextjs";
+
 import { SectionShell } from "@/design-system/patterns/section-shell";
+import { env } from "@/shared/config/env";
 
 export default function LoginPage() {
   return (
-    <SectionShell className="py-16">
-      <div className="max-w-md rounded-[1.75rem] border border-border bg-surface/80 p-6 shadow-soft">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">Login</p>
-        <h1 className="mt-3 text-3xl font-semibold">Clerk integration starts in Phase 3.</h1>
-        <p className="mt-4 text-sm leading-6 text-muted">
-          This route is already reserved so the auth flow can be wired without changing the
-          navigation structure later.
-        </p>
+    <SectionShell className="flex flex-1 items-center justify-center py-10">
+      <div className="flex justify-center md:-translate-y-6">
+        <SignIn
+          path={env.clerkSignInUrl}
+          routing="path"
+          signUpUrl={env.clerkSignUpUrl}
+          fallbackRedirectUrl={env.clerkSignInFallbackRedirectUrl}
+          signUpFallbackRedirectUrl={env.clerkSignUpFallbackRedirectUrl}
+        />
       </div>
     </SectionShell>
   );
 }
-

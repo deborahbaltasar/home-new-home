@@ -119,7 +119,7 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-3-auth-shell",
         title: "Integrate Clerk and protect authenticated routes",
-        status: "not_started",
+        status: "done",
         dependencies: ["phase-0-integrations"],
         acceptanceCriteria:
           "Signed-in users can enter the platform shell and unauthenticated access is gated."

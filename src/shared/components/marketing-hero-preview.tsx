@@ -96,7 +96,7 @@ export function MarketingHeroPreview({ progress }: { progress: number }) {
   };
 
   return (
-    <Card tone="emphasis" className="space-y-5 p-6 sm:p-7">
+    <Card tone="emphasis" className="w-full space-y-5 overflow-hidden p-6 sm:p-7">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
@@ -175,14 +175,14 @@ export function MarketingHeroPreview({ progress }: { progress: number }) {
               </Card>
 
               <div className="grid gap-3 sm:grid-cols-2">
-                <Card tone="subtle" className="space-y-2">
+                <Card tone="subtle" className="min-w-0 space-y-2">
                   <div className="flex items-center gap-2">
                     <PreviewIcon type={active.left[0]} />
                     <p className="font-semibold">{active.left[1]}</p>
                   </div>
                   <p className="text-sm text-muted">{active.left[2]}</p>
                 </Card>
-                <Card tone="subtle" className="space-y-2">
+                <Card tone="subtle" className="min-w-0 space-y-2">
                   <div className="flex items-center gap-2">
                     <PreviewIcon type={active.right[0]} />
                     <p className="font-semibold">{active.right[1]}</p>

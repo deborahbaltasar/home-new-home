@@ -21,10 +21,9 @@ import {
 import type { Route } from "next";
 import Link from "next/link";
 
-const marketingLinks: Record<"login" | "roadmap" | "signup", Route> = {
+const marketingLinks: Record<"login" | "roadmap", Route> = {
   login: "/login" as Route,
-  roadmap: "/roadmap" as Route,
-  signup: "/sign-up" as Route
+  roadmap: "/roadmap" as Route
 };
 
 const chips = ["rooms", "priorities", "comparisons", "family decisions"];
@@ -62,7 +61,7 @@ export default function MarketingPage() {
           </div>
 
           <div id="marketing-hero-ctas" className="flex flex-wrap gap-3">
-            <Link href={marketingLinks.signup}>
+            <Link href={marketingLinks.login}>
               <Button size="lg">
                 Start planning
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -76,8 +75,8 @@ export default function MarketingPage() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.1} variant="scaleIn">
-          <div className="relative">
+        <Reveal delay={0.1} variant="scaleIn" className="min-w-0">
+          <div className="relative mx-auto w-full max-w-[34rem] min-w-0 lg:ml-auto">
             <MarketingHeroPreview progress={publicProgress} />
 
           </div>
