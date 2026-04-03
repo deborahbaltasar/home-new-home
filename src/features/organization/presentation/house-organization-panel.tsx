@@ -25,6 +25,7 @@ type HouseOrganizationPanelProps = {
   house: House;
   organization: HouseOrganization;
   currentUserRole?: House["members"][number]["role"];
+  selectedRoomId?: string;
 };
 
 const inputClassName =
@@ -33,7 +34,8 @@ const inputClassName =
 export function HouseOrganizationPanel({
   house,
   organization,
-  currentUserRole
+  currentUserRole,
+  selectedRoomId
 }: HouseOrganizationPanelProps) {
   const rooms = sortRooms(organization.rooms);
   const categories = sortCategories(organization.categories);
@@ -85,7 +87,12 @@ export function HouseOrganizationPanel({
           <div className="grid gap-3">
             {rooms.length ? (
               rooms.map((room) => (
-                <Card key={room.id} tone="subtle" className="flex flex-wrap items-center justify-between gap-3 p-4">
+                <Card
+                  key={room.id}
+                  id={`room-${room.id}`}
+                  tone={selectedRoomId === room.id ? "emphasis" : "subtle"}
+                  className="scroll-mt-24 flex flex-wrap items-center justify-between gap-3 p-4"
+                >
                   <div className="flex flex-wrap items-center gap-2">
                     <span className={`rounded-pill px-3 py-1 text-xs font-semibold ${roomColorClassName[room.color]}`}>
                       {roomColorLabel[room.color]}
@@ -111,7 +118,7 @@ export function HouseOrganizationPanel({
 
         <Card className="space-y-4">
           <div className="space-y-1">
-            <Badge variant="neutral">Categories</Badge>
+            <Badge variant="accent">Categories</Badge>
             <h2 className="text-2xl font-semibold tracking-tight">Define functional groupings.</h2>
           </div>
 
@@ -151,12 +158,16 @@ export function HouseOrganizationPanel({
       </div>
 
       <Card className="space-y-4" tone="subtle">
-        <Badge variant="warning">Next dependency</Badge>
+        <Badge variant="success">Phase 5 closed</Badge>
         <p className="max-w-3xl text-sm leading-6 text-muted">
-          Items should be created on top of this structure so each entry can later connect to rooms
-          and categories without route churn.
+          Rooms and categories now serve as live structure for the item workflow. Create items on
+          top of this house setup so each entry stays attached to both physical space and functional
+          grouping.
         </p>
-        <div>
+        <div className="flex flex-wrap gap-3">
+          <Link href={`/app/houses/${house.id}/items`}>
+            <Button type="button">Open items</Button>
+          </Link>
           <Link href={`/app/houses/${house.id}`}>
             <Button type="button" variant="outline">
               Back to house overview

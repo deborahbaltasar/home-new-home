@@ -8,10 +8,12 @@ import { HouseOrganizationPanel } from "@/features/organization/presentation/hou
 
 type HouseRoomsPageProps = {
   params: Promise<{ houseId: string }>;
+  searchParams?: Promise<{ roomId?: string }>;
 };
 
-export default async function HouseRoomsPage({ params }: HouseRoomsPageProps) {
+export default async function HouseRoomsPage({ params, searchParams }: HouseRoomsPageProps) {
   const { houseId } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const user = await clerkAuthProvider.getCurrentUser();
   const houseRepository = getHouseRepository();
   const organizationRepository = getOrganizationRepository();
@@ -34,6 +36,7 @@ export default async function HouseRoomsPage({ params }: HouseRoomsPageProps) {
       house={house}
       organization={organization}
       currentUserRole={currentMember?.role}
+      selectedRoomId={resolvedSearchParams?.roomId}
     />
   );
 }

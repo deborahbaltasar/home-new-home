@@ -100,23 +100,24 @@ Business rules are kept away from framework and vendor code. Shared code exists,
 
 ## Status
 
-The project has moved beyond shell-only setup and now has the Houses domain in place:
+The project has moved beyond shell-only setup and now has the houses, organization, and items foundations in place:
 
 - strategic documentation created
 - repository scaffold created
 - base theme and primitives created
 - Clerk-backed auth shell created
 - house creation, memberships, role management, and invite-link generation created
-- phase 5 started with Supabase-ready houses persistence and initial rooms/categories CRUD
+- phase 5 delivered with Supabase-ready houses persistence and rooms/categories tied to item assignment
+- phase 6 delivered with item modeling, CRUD, quantity, status, priority, essentiality, attachments, and filtered views
 
 ## Next Recommended Phase
 
-The next step is to organize each house before item management lands:
+The next step is to enrich each item with purchase comparison data:
 
-1. apply the Supabase migration and configure the envs in the target environment
-2. keep rooms and categories flowing through the real database path
-3. connect both structures to each house before item CRUD
-4. then attach items to rooms and categories in Phase 6
+1. add `ItemStoreOption` contracts and persistence on top of the new `items` core
+2. support multiple store entries per item with link, store, and price
+3. add target-price planning and initial comparison UI
+4. keep purchase-option logic isolated so later public sharing and work-hours features can reuse it
 
 ## Local Development
 

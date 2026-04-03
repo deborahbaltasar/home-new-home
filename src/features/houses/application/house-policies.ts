@@ -66,3 +66,11 @@ export function getHouseStats(house: House) {
     invites: house.invites.length
   };
 }
+
+export function getHouseCompletionPercentage(totalItems: number, completedItems: number) {
+  if (totalItems <= 0) {
+    return 0;
+  }
+
+  return Math.round((completedItems / totalItems) * 100);
+}

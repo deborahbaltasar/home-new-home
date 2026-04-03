@@ -202,3 +202,93 @@ export function PublicShareLoading() {
     </div>
   );
 }
+
+export function ItemsPageLoading() {
+  return (
+    <div className="grid gap-4">
+      <Card className="space-y-4">
+        <div className="flex flex-wrap gap-3">
+          <Skeleton className="h-8 w-24 rounded-pill" />
+          <Skeleton className="h-8 w-28 rounded-pill" />
+          <Skeleton className="h-8 w-32 rounded-pill" />
+        </div>
+        <Skeleton className="h-10 w-80" />
+        <Skeleton className="h-4 w-full max-w-3xl" />
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <Card key={index} tone="subtle" className="space-y-2 p-4">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-8 w-16" />
+            </Card>
+          ))}
+        </div>
+      </Card>
+
+      <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+        <Card className="space-y-4">
+          <Skeleton className="h-7 w-28 rounded-pill" />
+          <Skeleton className="h-8 w-56" />
+          <div className="grid gap-3">
+            <Skeleton className="h-11 w-full rounded-2xl" />
+            <Skeleton className="h-28 w-full rounded-[1.5rem]" />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Skeleton className="h-11 w-full rounded-2xl" />
+              <Skeleton className="h-11 w-full rounded-2xl" />
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Skeleton className="h-11 w-full rounded-2xl" />
+              <Skeleton className="h-11 w-full rounded-2xl" />
+              <Skeleton className="h-11 w-full rounded-2xl" />
+            </div>
+            <Skeleton className="h-11 w-full rounded-2xl" />
+            <Skeleton className="h-24 w-full rounded-[1.5rem]" />
+            <div className="flex flex-wrap gap-3">
+              <Skeleton className="h-11 w-32 rounded-pill" />
+              <Skeleton className="h-11 w-56 rounded-pill" />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="space-y-2">
+              <Skeleton className="h-7 w-20 rounded-pill" />
+              <Skeleton className="h-8 w-72" />
+            </div>
+            <Skeleton className="h-10 w-28 rounded-pill" />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <Skeleton key={index} className="h-10 w-24 rounded-pill" />
+            ))}
+          </div>
+          <div className="grid gap-3">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <Card key={index} tone="subtle" className="space-y-4 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <Skeleton className="h-8 w-20 rounded-pill" />
+                      <Skeleton className="h-8 w-28 rounded-pill" />
+                      <Skeleton className="h-8 w-24 rounded-pill" />
+                    </div>
+                    <Skeleton className="h-8 w-40" />
+                  </div>
+                  <div className="flex gap-2">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Skeleton className="h-8 w-24 rounded-pill" />
+                  <Skeleton className="h-8 w-24 rounded-pill" />
+                  <Skeleton className="h-8 w-16 rounded-pill" />
+                </div>
+              </Card>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}

@@ -149,7 +149,7 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-5-rooms-categories",
         title: "Move houses persistence to Supabase and organize the home by rooms and categories",
-        status: "in_progress",
+        status: "done",
         dependencies: ["phase-4-houses"],
         acceptanceCriteria:
           "Houses and members persist in Supabase, and users can manage rooms and categories and attach items to them."
@@ -164,7 +164,7 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-6-items-core",
         title: "Deliver item CRUD, priority, quantity, and status views",
-        status: "not_started",
+        status: "done",
         dependencies: ["phase-5-rooms-categories"],
         acceptanceCriteria:
           "Users can create and manage items with home-oriented views."
