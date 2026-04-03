@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 import { clerkAuthProvider } from "@/integrations/clerk/clerk-auth-provider";
 import {
   parseCreateItemInput,
+  parseCreateStoreOptionInput,
   parseDeleteItemInput,
+  parseDeleteStoreOptionInput,
   parseUpdateItemInput
 } from "@/features/items/infrastructure/cookie-item-repository";
 import { getItemRepository } from "@/features/items/infrastructure/item-repository-factory";
@@ -55,4 +57,40 @@ export async function deleteItemAction(formData: FormData) {
   await repository.deleteItem(user, input);
   revalidateHouseItems(input.houseId);
   redirect(`/app/houses/${input.houseId}/items`);
+}
+
+export async function createStoreOptionAction(formData: FormData) {
+  const user = await requireUser();
+  const input = parseCreateStoreOptionInput(formData);
+  const repository = getItemRepository();
+
+  await repository.createStoreOption(user, input);
+  revalidateHouseItems(input.houseId);
+  redirect(`/app/houses/${input.houseId}/items?edit=${input.itemId}`);
+}
+
+export async function deleteStoreOptionAction(formData: FormData) {
+  const user = await requireUser();
+  const input = parseDeleteStoreOptionInput(formData);
+  const repository = getItemRepository();
+
+  await repository.deleteStoreOption(user, input);
+  revalidateHouseItems(input.houseId);
+  redirect(`/app/houses/${input.houseId}/items?edit=${input.itemId}`);
+}
+
+export async function updateItemStatusAction(input: {
+  houseId: string;
+  itemId: string;
+  status: "planning" | "purchased";
+}) {
+  const user = await requireUser();
+  const repository = getItemRepository();
+
+  await repository.updateItem(user, {
+    houseId: input.houseId,
+    itemId: input.itemId,
+    status: input.status
+  });
+  revalidateHouseItems(input.houseId);
 }

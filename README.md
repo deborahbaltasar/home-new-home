@@ -109,15 +109,16 @@ The project has moved beyond shell-only setup and now has the houses, organizati
 - house creation, memberships, role management, and invite-link generation created
 - phase 5 delivered with Supabase-ready houses persistence and rooms/categories tied to item assignment
 - phase 6 delivered with item modeling, CRUD, quantity, status, priority, essentiality, attachments, and filtered views
+- phase 7 delivered with target-price planning, multiple store options per item, and comparison-ready purchase views
 
 ## Next Recommended Phase
 
-The next step is to enrich each item with purchase comparison data:
+The next step is to expose selected items safely to external people:
 
-1. add `ItemStoreOption` contracts and persistence on top of the new `items` core
-2. support multiple store entries per item with link, store, and price
-3. add target-price planning and initial comparison UI
-4. keep purchase-option logic isolated so later public sharing and work-hours features can reuse it
+1. add `PublicShareLink` and `ItemReservation` contracts on top of the richer item boundary
+2. generate tokenized public links for a house selection or item subset
+3. let external people identify themselves when reserving or buying an item
+4. keep reservation and public access rules isolated so internal planning stays protected
 
 ## Local Development
 

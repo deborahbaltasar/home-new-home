@@ -9,7 +9,7 @@ import { getOrganizationRepository } from "@/features/organization/infrastructur
 
 type HouseItemsPageProps = {
   params: Promise<{ houseId: string }>;
-  searchParams?: Promise<{ view?: string; edit?: string; roomId?: string }>;
+  searchParams?: Promise<{ view?: string; edit?: string; addOption?: string; roomId?: string }>;
 };
 
 function isView(value: string | undefined): value is "all" | "essentials" | "open" | "completed" {
@@ -41,6 +41,7 @@ export default async function HouseItemsPage({ params, searchParams }: HouseItem
   const currentMember = getHouseMemberForUser(house, user.id);
   const activeView = isView(resolvedSearchParams?.view) ? resolvedSearchParams.view : "all";
   const activeEditItemId = resolvedSearchParams?.edit?.trim() || undefined;
+  const activeAddStoreOptionItemId = resolvedSearchParams?.addOption?.trim() || undefined;
   const selectedRoomId = resolvedSearchParams?.roomId?.trim() || undefined;
 
   return (
@@ -51,6 +52,7 @@ export default async function HouseItemsPage({ params, searchParams }: HouseItem
       currentUserRole={currentMember?.role}
       activeView={activeView}
       activeEditItemId={activeEditItemId}
+      activeAddStoreOptionItemId={activeAddStoreOptionItemId}
       selectedRoomId={selectedRoomId}
     />
   );

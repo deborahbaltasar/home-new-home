@@ -179,7 +179,7 @@ export const technicalChecklistSeed: ChecklistPhase[] = [
       {
         id: "phase-7-store-options",
         title: "Add multiple store options and target price support",
-        status: "not_started",
+        status: "done",
         dependencies: ["phase-6-items-core"],
         acceptanceCriteria:
           "Users can compare multiple store options for an item."

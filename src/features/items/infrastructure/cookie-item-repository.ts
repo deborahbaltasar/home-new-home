@@ -4,12 +4,16 @@ import type { AuthUser } from "@/integrations/clerk/clerk-boundary";
 import type { ItemRepository } from "@/features/items/domain/item.repository";
 import type {
   CreateItemInput,
+  CreateItemStoreOptionInput,
   DeleteItemInput,
+  DeleteItemStoreOptionInput,
   Item,
   ItemEssentiality,
   ItemPriority,
   ItemStatus,
-  UpdateItemInput
+  ItemStoreOption,
+  UpdateItemInput,
+  UpdateItemStoreOptionInput
 } from "@/features/items/domain/item.types";
 
 const COOKIE_NAME = "hnh-items-v1";
@@ -65,6 +69,23 @@ function parseQuantity(value: FormDataEntryValue | string | null | undefined) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
 }
 
+function parseMoney(value: FormDataEntryValue | string | null | undefined) {
+  const normalized = normalizeText(value).replace(",", ".");
+  const parsed = Number.parseFloat(normalized);
+
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
+}
+
+function parseNullableMoney(value: FormDataEntryValue | string | null | undefined) {
+  const normalized = normalizeText(value);
+
+  if (!normalized) {
+    return null;
+  }
+
+  return parseMoney(normalized);
+}
+
 async function readState() {
   const cookieStore = await cookies();
   const rawValue = cookieStore.get(COOKIE_NAME)?.value;
@@ -117,6 +138,7 @@ export function parseCreateItemInput(formData: FormData): CreateItemInput {
     essentiality: isItemEssentiality(essentialityValue) ? essentialityValue : "helpful",
     quantity: parseQuantity(formData.get("quantity")),
     status: isItemStatus(statusValue) ? statusValue : "planning",
+    targetPrice: parseMoney(formData.get("targetPrice")),
     imageUrl: normalizeOptional(formData.get("imageUrl")),
     attachmentUrls: normalizeAttachmentUrls(formData.get("attachmentUrls"))
   };
@@ -157,11 +179,66 @@ export function parseUpdateItemInput(formData: FormData): UpdateItemInput {
     essentiality: isItemEssentiality(nextEssentiality) ? nextEssentiality : undefined,
     quantity: quantityRaw ? parseQuantity(quantityRaw) : undefined,
     status: isItemStatus(nextStatus) ? nextStatus : undefined,
+    targetPrice: formData.has("targetPrice")
+      ? parseNullableMoney(formData.get("targetPrice"))
+      : undefined,
     imageUrl: normalizeOptional(formData.get("imageUrl")),
     attachmentUrls: formData.has("attachmentUrls")
       ? normalizeAttachmentUrls(formData.get("attachmentUrls"))
       : undefined
   };
+}
+
+export function parseCreateStoreOptionInput(formData: FormData): CreateItemStoreOptionInput {
+  const houseId = normalizeText(formData.get("houseId"));
+  const itemId = normalizeText(formData.get("itemId"));
+  const storeName = normalizeText(formData.get("storeName"));
+  const price = parseMoney(formData.get("price"));
+
+  if (!houseId || !itemId || !storeName || price === undefined) {
+    throw new Error("Store option data is incomplete.");
+  }
+
+  return {
+    houseId,
+    itemId,
+    storeName,
+    productUrl: normalizeOptional(formData.get("productUrl")),
+    price,
+    notes: normalizeOptional(formData.get("notes"))
+  };
+}
+
+export function parseUpdateStoreOptionInput(formData: FormData): UpdateItemStoreOptionInput {
+  const houseId = normalizeText(formData.get("houseId"));
+  const itemId = normalizeText(formData.get("itemId"));
+  const optionId = normalizeText(formData.get("optionId"));
+
+  if (!houseId || !itemId || !optionId) {
+    throw new Error("Store option update is incomplete.");
+  }
+
+  return {
+    houseId,
+    itemId,
+    optionId,
+    storeName: normalizeOptional(formData.get("storeName")),
+    productUrl: normalizeOptional(formData.get("productUrl")),
+    price: formData.has("price") ? parseMoney(formData.get("price")) : undefined,
+    notes: normalizeOptional(formData.get("notes"))
+  };
+}
+
+export function parseDeleteStoreOptionInput(formData: FormData): DeleteItemStoreOptionInput {
+  const houseId = normalizeText(formData.get("houseId"));
+  const itemId = normalizeText(formData.get("itemId"));
+  const optionId = normalizeText(formData.get("optionId"));
+
+  if (!houseId || !itemId || !optionId) {
+    throw new Error("Store option deletion is incomplete.");
+  }
+
+  return { houseId, itemId, optionId };
 }
 
 export const cookieItemRepository: ItemRepository = {
@@ -186,8 +263,10 @@ export const cookieItemRepository: ItemRepository = {
         essentiality: input.essentiality,
         quantity: input.quantity,
         status: input.status,
+        targetPrice: input.targetPrice,
         imageUrl: input.imageUrl,
         attachmentUrls: input.attachmentUrls,
+        storeOptions: [],
         createdAt: timestamp,
         updatedAt: timestamp
       }
@@ -212,6 +291,8 @@ export const cookieItemRepository: ItemRepository = {
             essentiality: input.essentiality ?? item.essentiality,
             quantity: input.quantity ?? item.quantity,
             status: input.status ?? item.status,
+            targetPrice:
+              input.targetPrice === undefined ? item.targetPrice : input.targetPrice ?? undefined,
             imageUrl: input.imageUrl ?? item.imageUrl,
             attachmentUrls: input.attachmentUrls ?? item.attachmentUrls,
             updatedAt: new Date().toISOString()
@@ -226,6 +307,81 @@ export const cookieItemRepository: ItemRepository = {
   async deleteItem(_user, input) {
     const state = await readState();
     const nextItems = ensureHouseState(state, input.houseId).filter((item) => item.id !== input.itemId);
+    state[input.houseId] = nextItems;
+    await writeState(state);
+    return nextItems;
+  },
+  async createStoreOption(_user, input) {
+    const state = await readState();
+    const timestamp = new Date().toISOString();
+    const nextItems = ensureHouseState(state, input.houseId).map((item) =>
+      item.id === input.itemId
+        ? {
+            ...item,
+            storeOptions: [
+              ...item.storeOptions,
+              {
+                id: buildId("store-option"),
+                houseId: input.houseId,
+                itemId: input.itemId,
+                storeName: input.storeName,
+                productUrl: input.productUrl,
+                price: input.price,
+                notes: input.notes,
+                createdAt: timestamp,
+                updatedAt: timestamp
+              } satisfies ItemStoreOption
+            ],
+            updatedAt: timestamp
+          }
+        : item
+    );
+
+    state[input.houseId] = nextItems;
+    await writeState(state);
+    return nextItems;
+  },
+  async updateStoreOption(_user, input) {
+    const state = await readState();
+    const timestamp = new Date().toISOString();
+    const nextItems = ensureHouseState(state, input.houseId).map((item) =>
+      item.id === input.itemId
+        ? {
+            ...item,
+            storeOptions: item.storeOptions.map((option) =>
+              option.id === input.optionId
+                ? {
+                    ...option,
+                    storeName: input.storeName ?? option.storeName,
+                    productUrl: input.productUrl ?? option.productUrl,
+                    price: input.price ?? option.price,
+                    notes: input.notes ?? option.notes,
+                    updatedAt: timestamp
+                  }
+                : option
+            ),
+            updatedAt: timestamp
+          }
+        : item
+    );
+
+    state[input.houseId] = nextItems;
+    await writeState(state);
+    return nextItems;
+  },
+  async deleteStoreOption(_user, input) {
+    const state = await readState();
+    const timestamp = new Date().toISOString();
+    const nextItems = ensureHouseState(state, input.houseId).map((item) =>
+      item.id === input.itemId
+        ? {
+            ...item,
+            storeOptions: item.storeOptions.filter((option) => option.id !== input.optionId),
+            updatedAt: timestamp
+          }
+        : item
+    );
+
     state[input.houseId] = nextItems;
     await writeState(state);
     return nextItems;
